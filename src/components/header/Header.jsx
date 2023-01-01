@@ -9,6 +9,8 @@ import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from "react-redux";
 import { SET_ACTİVE_USER, REMOVE_ACTİVE_USER } from "../../redux/slice/authSlice";
+import ShowOnLogin, { ShowOnLogout } from "../hiddenLink/HiddenLink";
+import AdminOnlyRoute, { AdminOnlyLink } from "../adminOnlyRoute/AdminOnlyRoute";
 
 const Header = () => {
 
@@ -42,7 +44,7 @@ const Header = () => {
         dispatch(REMOVE_ACTİVE_USER())
       }
     });
-  }, [dispatch,displayName])
+  }, [dispatch, displayName])
 
 
   const toggleMenu = () => {
@@ -118,6 +120,14 @@ const Header = () => {
                 <FaTimes size={22} color="#fff" onClick={hideMenu} />
               </li>
               <li>
+                <AdminOnlyLink>
+                  {" "}
+                  <Link to="/admin/home">
+                    <button className="--btn --btn-primary">Admin</button>
+                    </Link>
+                </AdminOnlyLink>
+              </li>
+              <li>
                 <NavLink to="/" className={activeLink}>
                   Home
                 </NavLink>
@@ -130,11 +140,21 @@ const Header = () => {
             </ul>
             <div onClick={hideMenu} className={styles["header-right"]}>
               <span className={styles.links}>
-                <NavLink className={activeLink} to="/login">Login</NavLink>
-                <a href="#home"><FaUserCircle size={16} /> Hi,{displayName}</a>
-                <NavLink className={activeLink} to="/register">Register</NavLink>
-                <NavLink className={activeLink} to="/order-history">My Orders</NavLink>
-                <NavLink onClick={logoutUser} to="/order-history">Logout</NavLink>
+
+                <ShowOnLogout>
+                  <NavLink className={activeLink} to="/login">Login</NavLink>
+                  <NavLink className={activeLink} to="/register">Register</NavLink>
+                </ShowOnLogout>
+                <ShowOnLogin>
+                  <a style={{ color: "#ff7722" }} href="#home"><FaUserCircle size={16} /> Hi,{displayName}</a>
+                </ShowOnLogin>
+                <ShowOnLogin>
+                  <NavLink className={activeLink} to="/order-history">My Orders</NavLink>
+                </ShowOnLogin>
+                <ShowOnLogin>
+                  <NavLink onClick={logoutUser} to="/order-history">Logout</NavLink>
+                </ShowOnLogin>
+
               </span>
               {cart}
 
