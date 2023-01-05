@@ -12,6 +12,28 @@ import { SET_ACTİVE_USER, REMOVE_ACTİVE_USER } from "../../redux/slice/authSli
 import ShowOnLogin, { ShowOnLogout } from "../hiddenLink/HiddenLink";
 import AdminOnlyRoute, { AdminOnlyLink } from "../adminOnlyRoute/AdminOnlyRoute";
 
+
+// Helper Components
+
+const logo = (
+  <div className={styles.logo}>
+    <Link>
+      <h2>
+        e<span>Commerce</span>.
+      </h2>
+    </Link>
+  </div>
+)
+const cart = (
+  <span className={styles.cart}>
+    <Link to="/cart">
+      Cart
+      <FaShoppingCart size={20} />
+      <p>0</p>
+    </Link>
+  </span>
+)
+
 const Header = () => {
 
   const [showMenu, setShowMenu] = useState(false)
@@ -55,27 +77,6 @@ const Header = () => {
     setShowMenu(false)
   }
 
-
-
-  const logo = (
-    <div className={styles.logo}>
-      <Link>
-        <h2>
-          e<span>Commerce</span>.
-        </h2>
-      </Link>
-    </div>
-  )
-  const cart = (
-    <span className={styles.cart}>
-      <Link to="/cart">
-        Cart
-        <FaShoppingCart size={20} />
-        <p>0</p>
-      </Link>
-    </span>
-  )
-
   const activeLink = ({ isActive }) =>
     (isActive ? `${styles.active}` : "")
 
@@ -114,6 +115,9 @@ const Header = () => {
               onClick={hideMenu}
             >
             </div>
+
+            {/*****  Navigate Area *****/}
+
             <ul onClick={hideMenu}>
               <li className={styles["logo-mobile"]}>
                 {logo}
@@ -124,7 +128,7 @@ const Header = () => {
                   {" "}
                   <Link to="/admin/home">
                     <button className="--btn --btn-primary">Admin</button>
-                    </Link>
+                  </Link>
                 </AdminOnlyLink>
               </li>
               <li>
@@ -138,6 +142,8 @@ const Header = () => {
                 </NavLink>
               </li>
             </ul>
+
+              {/***** User Login/Logout *****/}
             <div onClick={hideMenu} className={styles["header-right"]}>
               <span className={styles.links}>
 

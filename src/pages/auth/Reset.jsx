@@ -10,9 +10,12 @@ import Loader from "../../components/loader/Loader";
 const Reset = () => {
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
+
   const resetPassword = (e) => {
     e.preventDefault()
     setLoading(true)
+
+    //Reset User
     sendPasswordResetEmail(auth, email)
       .then(() => {
         setLoading(false)

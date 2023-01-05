@@ -1,12 +1,16 @@
 import styles from './AdminAddProducts.module.scss'
-import { useState } from 'react'
+import {  useState } from 'react'
 import { Card } from "../../../pages"
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { db, storage } from '../../../firebase/config'
 import { toast } from 'react-toastify'
-import { addDoc, collection, Timestamp } from 'firebase/firestore'
-import { useNavigate } from 'react-router-dom'
+import { addDoc, collection, doc, setDoc, Timestamp } from 'firebase/firestore'
+import { useNavigate, useParams } from 'react-router-dom'
 import Loader from '../../loader/Loader'
+import { useSelector } from 'react-redux'
+import { selectProducts } from '../../../redux/slice/productsSlice'
+
+
 
 const initialState = {
   name: "",
@@ -29,17 +33,32 @@ const categories = [
 
 const AdminAddProducts = () => {
 
-  const [product, setProduct] = useState({
-    ...initialState
+  //Add & Edit product
+  const { id } = useParams()
+  const products = useSelector(selectProducts)
+  const prodctEdit = products.find(item => item.id === id)
 
+  function detecForm(id, f1, f2) {
+    if (id === "ADD") {
+      return f1;
+    }
+    else {
+      return f2;
+    }
+
+  }
+
+
+  const [product, setProduct] = useState(() => {
+    const newState = detecForm(id, { ...initialState }, prodctEdit)
+    return newState
   })
-
-
   const [uploadProgress, setUploadProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
 
 
+  //Input Changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -73,6 +92,8 @@ const AdminAddProducts = () => {
     );
   }
 
+  //Add Product
+
   const addProduct = (e) => {
     e.preventDefault()
     setLoading(false)
@@ -101,15 +122,52 @@ const AdminAddProducts = () => {
 
   }
 
+  const editProduct = (e) => {
+    e.preventDefault()
+    setLoading(false)
+
+    if (product.imageUrl !== prodctEdit.imageUrl) {
+
+      const strogeRef = ref(storage, prodctEdit.imageUrl);
+      deleteObject(strogeRef)
+
+    }
+
+    try {
+      setDoc(doc(db, "products", id), {
+        name: product.name,
+        imageUrl: product.imageUrl,
+        price: Number(product.price),
+        category: product.category,
+        brand: product.brand,
+        desc: product.desc,
+        createdAt: prodctEdit.createdAt,
+        editedAt: Timestamp.now().toDate()
+
+
+      });
+      setLoading(false)
+      toast.success("Product Edited Successfully")
+      navigate("/admin/all-products")
+
+
+    } catch (error) {
+      toast.error(error.message)
+      setLoading(false)
+
+    }
+  }
+
 
   return (
 
     <>
       {loading && <Loader />}
       <div className={styles.product}>
-        <h2>Add New Product</h2>
+        <h2>{detecForm(id, "Add New Product", "Edit Product")}</h2>
         <Card cardClass={styles.card} >
-          <form onSubmit={addProduct}>
+          <form onSubmit={detecForm(id, addProduct, editProduct)}>
+            {/*****  Name Input *****/}
             <label>Product name:</label>
             <input
               name="name"
@@ -119,6 +177,8 @@ const AdminAddProducts = () => {
               value={product.name}
               onChange={(e) => { handleInputChange(e) }}
             />
+
+            {/*****  Image Input & Progress Bar *****/}
 
             <label>Product Image:</label>
 
@@ -153,6 +213,8 @@ const AdminAddProducts = () => {
 
             </Card>
 
+            {/*****  Price Input *****/}
+
             <label>Product price:</label>
             <input
               name="price"
@@ -162,6 +224,8 @@ const AdminAddProducts = () => {
               value={product.price}
               onChange={(e) => { handleInputChange(e) }}
             />
+
+            {/*****  Category Input *****/}
 
             <label>Product category:</label>
             <select
@@ -183,6 +247,8 @@ const AdminAddProducts = () => {
 
             </select>
 
+            {/*****  Product Input *****/}
+
             <label>Product Company/Brtand:</label>
             <input
               name="brand"
@@ -193,6 +259,8 @@ const AdminAddProducts = () => {
               onChange={(e) => { handleInputChange(e) }}
             />
 
+            {/*****  Desc Input *****/}
+
             <label>Product Description:</label>
             <textarea
               name="desc"
@@ -202,7 +270,7 @@ const AdminAddProducts = () => {
               value={product.desc}
               onChange={(e) => { handleInputChange(e) }}
             />
-            <button type='submit' className='--btn --btn-primary'>Save Product</button>
+            <button type='submit' className='--btn --btn-primary'>{detecForm(id, "Save Product", "Edit Product")}</button>
 
           </form>
 

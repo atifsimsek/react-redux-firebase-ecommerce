@@ -18,6 +18,7 @@ const Register = () => {
 
   const navigate = useNavigate()
 
+
   const registerUser = (e) => {
     e.preventDefault()
     if (password !== cPassword) {
@@ -26,9 +27,10 @@ const Register = () => {
     }
     setLoading(true)
 
+    // Create User
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in 
         toast.success("Registration Successful...")
         setLoading(false)
         navigate("/login")
