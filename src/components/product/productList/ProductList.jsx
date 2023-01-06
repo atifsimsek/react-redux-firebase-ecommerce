@@ -1,13 +1,39 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './ProductList.module.scss'
 import { BsFillGridFill } from "react-icons/bs"
 import { FaList } from 'react-icons/fa'
 import Search from '../../search/Search'
+import ProductItem from '../productItem/ProductItem'
+import { useDispatch, useSelector } from 'react-redux'
+import { FILTER_BY_SEARCH, SORT_PRODUCTS, selectFilteredProducts } from '../../../redux/slice/filterSlice'
 
-const ProductList = () => {
+const ProductList = ({ products }) => {
 
   const [grid, setGrid] = useState(true)
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("latest");
+
+  const filterProducts = useSelector(selectFilteredProducts)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+
+    dispatch(FILTER_BY_SEARCH({
+      products,
+      search
+    }))
+
+  }, [dispatch, products, search])
+
+  useEffect(() => {
+
+    dispatch(SORT_PRODUCTS({
+      products,
+      sort
+    }))
+
+  }, [dispatch, products, sort])
 
 
   return (
@@ -18,7 +44,7 @@ const ProductList = () => {
           <FaList size={24} color="#0066d4" onClick={() => { setGrid(false) }} />
 
           <p>
-            <b>10</b> Products found.
+            <b>{filterProducts.length}</b> Products found.
           </p>
         </div>
         <Search value={search} onChange={(e) => { setSearch(e.target.value) }} />
@@ -28,16 +54,34 @@ const ProductList = () => {
         {/*****  Sort Products *****/}
         <div className={styles.sort}>
           <label>Sort by:</label>
-          <select>
+          <select value={sort} onChange={(e) => { setSort(e.target.value) }}>
             <option value="latest">Latest</option>
             <option value="lowest-price">Lowest Price</option>
-            <option value="higest-price">Highest Price</option>
+            <option value="highest-price">Highest Price</option>
             <option value="a-z">A-Z</option>
             <option value="z-a">Z-A</option>
           </select>
         </div>
       </div>
-    </div>
+
+      <div className={grid ? `${styles.grid}` : `${styles.list}}`}>
+        {products.length === 0 ? (
+          <p>No product found.</p>
+        ) : (
+          <>
+            {filterProducts.map((product) => {
+              return (
+                <div key={product.id}>
+                  <ProductItem {...product} grid={grid} product={product} />
+                </div>
+              )
+            })}
+          </>
+        )}
+      </div>
+
+
+    </div >
   )
 }
 
