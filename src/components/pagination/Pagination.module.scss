@@ -3,7 +3,7 @@
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 2px solid #ccc;
-  
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,11 +26,11 @@
     p {
       margin-left: 1rem;
       .page {
-        color: var(--color-danger);
+        color: orangered;
       }
     }
   }
   .active {
-    background-color: var(--color-danger);
+    background-color: orangered;
     color: #fff;
   }
