@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom"
 import Card from "../../../pages/card/Card"
 import styles from "./ProductItem.module.scss"
+import { useDispatch, useSelector } from "react-redux"
+import { ADD_TO_CART, selectCartItems } from "../../../redux/slice/cartSlice"
 
 const ProductItem = ({ product, grid, id, name, price, desc, imageUrl }) => {
+
+  const dispatch = useDispatch()
 
   const shortenText = (text, n = 15) => {
 
@@ -13,6 +17,13 @@ const ProductItem = ({ product, grid, id, name, price, desc, imageUrl }) => {
     }
 
     return text
+
+  }
+
+
+
+  const addToCart = (product) => {
+    dispatch(ADD_TO_CART(product))
 
   }
 
@@ -30,7 +41,7 @@ const ProductItem = ({ product, grid, id, name, price, desc, imageUrl }) => {
         </div>
         {!grid && <p className={styles.desc}>{shortenText(desc, 200)} </p>}
 
-        <button className="--btn --btn-danger">Add To Cart</button>
+        <button onClick={() => { addToCart(product) }} className="--btn --btn-danger">Add To Cart</button>
       </div>
     </Card>
   )
