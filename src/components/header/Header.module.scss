@@ -1,15 +1,13 @@
-.fixed {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    transition: all 0.5s;
-    z-index: 9;
-  }
-  
+
   header {
     width: 100%;
     background-color: var(--dark-blue);
     color: #fff;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    transition: all 0.5s;
+    z-index: 9;
   
     .header {
       width: 100%;

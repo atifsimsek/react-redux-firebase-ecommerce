@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom"
 import Card from "../../../pages/card/Card"
 import styles from "./ProductItem.module.scss"
-import { useDispatch, useSelector } from "react-redux"
-import { ADD_TO_CART, selectCartItems } from "../../../redux/slice/cartSlice"
+import { useDispatch } from "react-redux"
+import { ADD_TO_CART, CALCULATE_CARTQUANTİTY } from "../../../redux/slice/cartSlice"
 
 const ProductItem = ({ product, grid, id, name, price, desc, imageUrl }) => {
 
@@ -24,6 +24,7 @@ const ProductItem = ({ product, grid, id, name, price, desc, imageUrl }) => {
 
   const addToCart = (product) => {
     dispatch(ADD_TO_CART(product))
+    dispatch(CALCULATE_CARTQUANTİTY())
 
   }
 

@@ -5,10 +5,20 @@ import { toast } from 'react-toastify'
 import { db } from '../../../firebase/config'
 import styles from "./ProductDetails.module.scss"
 import spinner from "../../../assets/spinner.jpg"
+import { ADD_TO_CART, CALCULATE_CARTQUANTİTY, DECREASE_CART, selectCartItems } from '../../../redux/slice/cartSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const ProductDetails = () => {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
+
+  const cartItems = useSelector(selectCartItems)
+
+  console.log(cartItems)
+  const cartItem = cartItems.find((item) => item.id === id)
+
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     getProduct()
@@ -30,6 +40,28 @@ const ProductDetails = () => {
     }
 
   }
+
+
+  const addToCart = (product) => {
+    dispatch(ADD_TO_CART(product))
+    dispatch(CALCULATE_CARTQUANTİTY())
+
+  }
+
+
+  const increaseCart = (product) => {
+    dispatch(ADD_TO_CART(product))
+    dispatch(CALCULATE_CARTQUANTİTY())
+  }
+
+
+  const decreaseCart = (product) => {
+    dispatch(DECREASE_CART(product))
+    dispatch(CALCULATE_CARTQUANTİTY())
+  }
+
+
+
   return (
     <section>
       <div className={`container ${styles.product}`}>
@@ -38,7 +70,7 @@ const ProductDetails = () => {
           <Link to="/#products">&larr;Back To Products</Link>
         </div>
 
-        {product === null ? (<img src={spinner} alt="Loading" style={{width:"50px"}} />) : (
+        {product === null ? (<img src={spinner} alt="Loading" style={{ width: "50px" }} />) : (
           <>
             <div className={styles.details}>
               <div className={styles.img}>
@@ -54,14 +86,20 @@ const ProductDetails = () => {
                 <p>
                   <b>Brand: </b>{product.brand}
                 </p>
-                <div className={styles.count}>
-                  <button className='--btn'>-</button>
-                  <p>
-                    <b>1</b>
-                  </p>
-                  <button className='--btn'>+</button>
-                </div>
-                <button className='--btn --btn-danger'>ADD TO CART</button>
+                {
+                  cartItem?.cartQuantity
+                    ?(
+                      <div className={styles.count}>
+                        <button onClick={() => { decreaseCart(product) }} className='--btn'>-</button>
+                        <p>
+                          <b>{cartItem?.cartQuantity}</b>
+                        </p>
+                        <button onClick={() => { increaseCart(product) }} className='--btn'>+</button>
+                      </div>
+                    )
+                    : null
+                }
+                <button onClick={() => { addToCart(product) }} className='--btn --btn-danger'>ADD TO CART</button>
               </div>
             </div>
           </>

@@ -1,16 +1,46 @@
 import styles from './Cart.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { ADD_TO_CART, DECREASE_CART, REMOVE_FROM_CART, selectCartItems, selectCartTotalAmount, selectCartTotalQuantitiy } from '../../redux/slice/cartSlice'
-import { Link } from 'react-router-dom'
+import { ADD_TO_CART, CALCULATE_CARTQUANTİTY, CALCULATE_SUBTOTAL, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, SAVE_URL, selectCartItems, selectCartTotalAmount, selectCartTotalQuantitiy } from '../../redux/slice/cartSlice'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaTrashAlt } from "react-icons/fa"
 import Card from '../card/Card'
+import { useEffect } from 'react'
+import { selectIsLoggedIn } from '../../redux/slice/authSlice'
 
 const Cart = () => {
     const cartItems = useSelector(selectCartItems)
     const cartTotalAmount = useSelector(selectCartTotalAmount)
     const cartTotalQuantity = useSelector(selectCartTotalQuantitiy)
+    const isLoggedIn = useSelector(selectIsLoggedIn)
+    const url = window.location.href
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
+
+
+
+
+    useEffect(() => {
+        dispatch(CALCULATE_SUBTOTAL())
+        dispatch(CALCULATE_CARTQUANTİTY())
+        dispatch(SAVE_URL(""))
+    }, [dispatch, cartItems])
+
+
+    const checkout = () => {
+        if (isLoggedIn) {
+
+            navigate("/checkout-details")
+
+        }
+        else {
+            dispatch(SAVE_URL(url))
+            navigate("/login")
+        }
+
+    }
+
+
 
     const increaseCart = (cart) => {
 
@@ -25,9 +55,15 @@ const Cart = () => {
 
     }
 
-    const removeFromCart = (cart) =>{
+    const removeFromCart = (cart) => {
         dispatch(REMOVE_FROM_CART(cart))
     }
+
+    const clearCart = () => {
+        dispatch(CLEAR_CART())
+    }
+
+
 
     return (
         <section>
@@ -83,8 +119,8 @@ const Cart = () => {
                                                     {(price * cartQuantity).toFixed(2)}
                                                 </td>
                                                 <td className={styles.icons}>
-                                                    <FaTrashAlt size={19} color="red" onClick={()=>{removeFromCart(cart)}} />
-                                                  
+                                                    <FaTrashAlt size={19} color="red" onClick={() => { removeFromCart(cart) }} />
+
                                                 </td>
 
                                             </tr>
@@ -96,7 +132,11 @@ const Cart = () => {
                             </tbody>
                         </table>
                         <div className={styles.summary}>
-                            <button className='--btn --btn-danger'>Clear Cart</button>
+                            <button
+                                onClick={clearCart}
+                                className='--btn --btn-danger'>
+                                Clear Cart
+                            </button>
 
                             <div className={styles.checkout}>
                                 <div>
@@ -104,13 +144,13 @@ const Cart = () => {
                                 </div>
                                 <br />
                                 <Card cardClass={styles.card}>
-                                    <p>{`Cart items(s):${cartTotalQuantity}`}</p>
+                                    <p><b>{`Cart items(s):${cartTotalQuantity}`}</b></p>
                                     <div className={styles.text}>
                                         <h4>Subtotal:</h4>
                                         <h3>{`$${cartTotalAmount.toFixed(2)}`}</h3>
                                     </div>
                                     <p>Taxes and shipping calculated at checkout</p>
-                                    <button className='--btn --btn-primary --btn-block'>Checkout</button>
+                                    <button onClick={checkout} className='--btn --btn-primary --btn-block'>Checkout</button>
 
                                 </Card>
                             </div>

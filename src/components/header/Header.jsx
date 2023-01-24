@@ -1,47 +1,49 @@
 import styles from "./Header.module.scss"
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaTimes, FaUserCircle } from "react-icons/fa"
+import { FaShoppingCart, FaTimes, FaUserCircle, FaWindows } from "react-icons/fa"
 import { HiOutlineMenuAlt3 } from "react-icons/hi"
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/config"
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_ACTİVE_USER, REMOVE_ACTİVE_USER } from "../../redux/slice/authSlice";
 import ShowOnLogin, { ShowOnLogout } from "../hiddenLink/HiddenLink";
 import AdminOnlyRoute, { AdminOnlyLink } from "../adminOnlyRoute/AdminOnlyRoute";
+import { CALCULATE_CARTQUANTİTY, selectCartTotalQuantitiy } from "../../redux/slice/cartSlice";
 
 
-// Helper Components
 
-const logo = (
-  <div className={styles.logo}>
-    <Link>
-      <h2>
-        e<span>Commerce</span>.
-      </h2>
-    </Link>
-  </div>
-)
-const cart = (
-  <span className={styles.cart}>
-    <Link to="/cart">
-      Cart
-      <FaShoppingCart size={20} />
-      <p>0</p>
-    </Link>
-  </span>
-)
 
 const Header = () => {
 
   const [showMenu, setShowMenu] = useState(false)
   const [displayName, setdisplayName] = useState("")
+  const cartTotalQuantity = useSelector(selectCartTotalQuantitiy)
+  // const [scrollPage, setScrollPage] = useState(false)
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  // const fixNavbar = () => {
+  //   if (window.scrollY > 50) {
+  //     setScrollPage(true)
 
+  //   }
+  //   else {
+  //     setScrollPage(false)
+  //   }
+
+  // }
+
+  // window.addEventListener("scroll", fixNavbar)
+
+
+  //Calculate Cart Quantity
+  useEffect(() => {
+    dispatch(CALCULATE_CARTQUANTİTY())
+  }, [dispatch])
 
 
   // Monitor currently sign in user
@@ -89,6 +91,28 @@ const Header = () => {
       toast.error(error.message)
     });
   }
+
+
+  // Helper Components
+
+  const logo = (
+    <div className={styles.logo}>
+      <Link>
+        <h2>
+          e<span>Commerce</span>.
+        </h2>
+      </Link>
+    </div>
+  )
+  const cart = (
+    <span className={styles.cart}>
+      <Link to="/cart">
+        Cart
+        <FaShoppingCart size={20} />
+        <p>{cartTotalQuantity}</p>
+      </Link>
+    </span>
+  )
 
 
   return (
@@ -143,7 +167,7 @@ const Header = () => {
               </li>
             </ul>
 
-              {/***** User Login/Logout *****/}
+            {/***** User Login/Logout *****/}
             <div onClick={hideMenu} className={styles["header-right"]}>
               <span className={styles.links}>
 
