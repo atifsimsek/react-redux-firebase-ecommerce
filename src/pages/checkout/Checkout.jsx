@@ -23,7 +23,6 @@ const Checkout = () => {
   const shippingAddress = useSelector(selectShippingAddress)
   const billingAddress = useSelector(selectBillingAddress)
 
-  console.log(shippingAddress)
 
   useEffect(() => {
 

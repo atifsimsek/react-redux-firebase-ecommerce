@@ -5,6 +5,8 @@ import { Routes, Route } from 'react-router-dom'
 import AdminViewProducts from '../../components/admin/viewProducts/AdminViewProducts'
 import AdminAddProducts from '../../components/admin/addProducts/AdminAddProducts'
 import AdminOrders from '../../components/admin/orders/AdminOrders'
+import AdminOrderDetails from '../../components/admin/orderDetails/AdminOrderDetails'
+
 
 
 const Admin = () => {
@@ -19,6 +21,7 @@ const Admin = () => {
           <Route path="all-products" element={<AdminViewProducts />} />
           <Route path="add-product/:id" element={<AdminAddProducts />} />
           <Route path="orders" element={<AdminOrders />} />
+          <Route path="order-details/:id" element={<AdminOrderDetails />} />
         </Routes>
       </div>
     </div>

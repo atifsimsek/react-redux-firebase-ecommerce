@@ -1,12 +1,9 @@
-import { useEffect } from "react"
-import { useState } from "react"
-import { Link, useParams } from "react-router-dom"
-import spinnerImg from "../../assets/spinner.jpg"
-import useFetchDocument from "../../customHooks/useFetchDocument"
-import styles from "./OrderDetails.module.scss"
-
-const OrderDetails = () => {
-
+import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import styles from './OrderDetails.module.scss'
+import spinnerImg from "../../../assets/spinner.jpg"
+import useFetchDocument from '../../../customHooks/useFetchDocument'
+const AdminOrderDetails = () => {
   const { id } = useParams()
   const [order, setOrder] = useState(null)
   const { document } = useFetchDocument("orders", id)
@@ -16,11 +13,11 @@ const OrderDetails = () => {
   }, [document])
 
   return (
-    <section>
-      <div className={`container ${styles.table}`}>
+    <>
+      <div className={` ${styles.table}`}>
         <h2>Order Details</h2>
         <div>
-          <Link to="/order-history">&larr;Back To Orders</Link>
+          <Link to="/admin/orders">&larr;Back To Orders</Link>
         </div>
         <br />
         {order === null ? (
@@ -36,6 +33,15 @@ const OrderDetails = () => {
             <p>
               <b>Order Status</b> {order.orderStatus}
             </p>
+            <p>
+              <b>Shipping Address</b>
+              <br />
+              <b>Address: </b> {order.shippingAddress.line1}, {order.shippingAddress.line2}, {order.shippingAddress.city}
+              <br />
+              <b>State: </b>{order.shippingAddress.state}
+              <br />
+             <b> Country:</b> {order.shippingAddress.country}
+            </p>
             <br />
             <table>
               <thead>
@@ -45,7 +51,6 @@ const OrderDetails = () => {
                   <th>Price</th>
                   <th>Quantity</th>
                   <th>Total</th>
-                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -64,15 +69,7 @@ const OrderDetails = () => {
                       <td>$ {price}</td>
                       <td>{cartQuantity}</td>
                       <td>$ {(price*cartQuantity).toFixed(2)}</td>
-                      <td className={styles.icons}> 
-                      <Link to={`/review-product/${id}`}>
-                        <button className="--btn --btn-primary">
-                          Review Product
-                        </button>
-                      </Link>
-                      </td>
-
-
+            
                     </tr>
                   )
                 })}
@@ -81,9 +78,8 @@ const OrderDetails = () => {
           </>
         )}
       </div>
-
-    </section>
+    </>
   )
 }
 
-export default OrderDetails
+export default AdminOrderDetails

@@ -7,39 +7,47 @@ import styles from "./ProductDetails.module.scss"
 import spinner from "../../../assets/spinner.jpg"
 import { ADD_TO_CART, CALCULATE_CARTQUANTİTY, DECREASE_CART, selectCartItems } from '../../../redux/slice/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import useFetchDocument from '../../../customHooks/useFetchDocument'
+import useFetchCollection from '../../../customHooks/useFetchCollection'
+import Card from '../../../pages/card/Card'
+import StarsRating from 'react-star-rate'
 
 const ProductDetails = () => {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
+  const { document } = useFetchDocument("products", id)
+  const { data } = useFetchCollection("reviews")
+  const filterReviews = data.filter((review) => review.productID === id)
 
   const cartItems = useSelector(selectCartItems)
 
-  console.log(cartItems)
   const cartItem = cartItems.find((item) => item.id === id)
 
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    getProduct()
-  }, [])
+    setProduct(document)
+  }, [document])
 
-  const getProduct = async () => {
 
-    const docRef = doc(db, "products", id);
-    const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      const obj = {
-        id: id,
-        ...docSnap.data()
-      }
-      setProduct(obj)
-    } else {
-      toast.error("Product not found")
-    }
+  // const getProduct = async () => {
 
-  }
+  //   const docRef = doc(db, "products", id);
+  //   const docSnap = await getDoc(docRef);
+
+  //   if (docSnap.exists()) {
+  //     const obj = {
+  //       id: id,
+  //       ...docSnap.data()
+  //     }
+  //     setProduct(obj)
+  //   } else {
+  //     toast.error("Product not found")
+  //   }
+
+  // }
 
 
   const addToCart = (product) => {
@@ -88,7 +96,7 @@ const ProductDetails = () => {
                 </p>
                 {
                   cartItem?.cartQuantity
-                    ?(
+                    ? (
                       <div className={styles.count}>
                         <button onClick={() => { decreaseCart(product) }} className='--btn'>-</button>
                         <p>
@@ -104,6 +112,38 @@ const ProductDetails = () => {
             </div>
           </>
         )}
+        <Card cardClass={styles.cardClass}>
+          <h3>Product Reviews</h3>
+          <div>
+            {filterReviews.length === 0 ? (
+              <p>There are no reviwes for this product yet.</p>
+            ) : (
+              <>
+                {filterReviews.map((item, index) => {
+                  const { rate, review, reviewDate, userName } = item
+                  console.log(item)
+                  return (
+                    <div key={index} className={styles.review}>
+                      <StarsRating value={rate} />
+                      <p>{review}</p>
+                      <span>
+                        <b>{reviewDate}</b>
+                      </span>
+                      <br />
+                      <span>
+                        <b>by: {userName}</b>
+                      </span>
+
+
+                    </div>
+                  )
+                })}
+              </>
+            )
+            }
+          </div>
+
+        </Card>
       </div>
     </section>
   )
