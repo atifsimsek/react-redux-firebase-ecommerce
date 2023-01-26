@@ -93,7 +93,7 @@ const CheckoutForm = () => {
         elements,
         confirmParams: {
           // Make sure to change this to your payment completion page
-          return_url: "http://localhost:3000/checkout-success",
+          return_url: "https://atifsimsek.github.io/checkout-success",
         },
         redirect: "if_required"
       })

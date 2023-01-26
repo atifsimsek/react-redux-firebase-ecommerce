@@ -86,7 +86,7 @@ const Header = () => {
 
     signOut(auth).then(() => {
       toast.success("Logout successfully")
-      navigate("/")
+      navigate("/react-redux-firebase-ecommerce")
     }).catch((error) => {
       toast.error(error.message)
     });
@@ -97,7 +97,7 @@ const Header = () => {
 
   const logo = (
     <div className={styles.logo}>
-      <Link to={"/"}>
+      <Link to={"/react-redux-firebase-ecommerce/"}>
         <h2>
           e<span>Commerce</span>.
         </h2>
@@ -156,7 +156,7 @@ const Header = () => {
                 </AdminOnlyLink>
               </li>
               <li>
-                <NavLink to="/" className={activeLink}>
+                <NavLink to="/react-redux-firebase-ecommerce/" className={activeLink}>
                   Home
                 </NavLink>
               </li>

@@ -28,7 +28,7 @@ const Login = () => {
       return navigate("/cart")
     }
     else{
-      return navigate("/")
+      return navigate("/react-redux-firebase-ecommerce")
     }
   }
 

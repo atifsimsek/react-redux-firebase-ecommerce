@@ -24,7 +24,7 @@ const CheckoutSummary = () => {
                                     Your cart is empty
                                 </p>
                                 <button>
-                                    <Link to={"/#products"}>
+                                    <Link to={"/react-redux-firebase-ecommerce/#products"}>
                                         Back To Shop
                                     </Link>
                                 </button>

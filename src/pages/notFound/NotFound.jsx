@@ -9,7 +9,7 @@ const NotFound = () => {
                 <p>Opss, page not found.</p>
 
                 <button className='--btn'>
-                    <Link to={"/"}>
+                    <Link to={"/react-redux-firebase-ecommerce/"}>
                         &larr;Back To Home
                     </Link>
                 </button>

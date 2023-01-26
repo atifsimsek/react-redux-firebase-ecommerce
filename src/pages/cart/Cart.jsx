@@ -74,7 +74,7 @@ const Cart = () => {
                         <p>Your cart is currently emty.</p>
                         <br />
                         <div>
-                            <Link to="/#products">&larr; Continue shopping</Link>
+                            <Link to="/react-redux-firebase-ecommerce/#products">&larr; Continue shopping</Link>
                         </div>
 
                     </>
@@ -140,7 +140,7 @@ const Cart = () => {
 
                             <div className={styles.checkout}>
                                 <div>
-                                    <Link to="/#products">&larr; Continue shopping</Link>
+                                    <Link to="/react-redux-firebase-ecommerce/#products">&larr; Continue shopping</Link>
                                 </div>
                                 <br />
                                 <Card cardClass={styles.card}>

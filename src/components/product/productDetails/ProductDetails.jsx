@@ -73,7 +73,7 @@ const ProductDetails = () => {
       <div className={`container ${styles.product}`}>
         <h2>Product Details</h2>
         <div>
-          <Link to="/#products">&larr;Back To Products</Link>
+          <Link to="/react-redux-firebase-ecommerce/#products">&larr;Back To Products</Link>
         </div>
 
         {product === null ? (<img src={spinner} alt="Loading" style={{ width: "50px" }} />) : (
