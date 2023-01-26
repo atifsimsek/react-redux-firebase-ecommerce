@@ -32,7 +32,6 @@ const ReviewProducs = () => {
 
     const today = new Date()
     const date = today.toDateString()
-    const time = today.toLocaleTimeString()
     const reviewConfig = {
       userID,
       productID: id,

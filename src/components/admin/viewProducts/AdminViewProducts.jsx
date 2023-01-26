@@ -11,18 +11,44 @@ import Notiflix from 'notiflix'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectProducts, STORE_PRODUCTS } from '../../../redux/slice/productsSlice'
 import useFetchCollection from '../../../customHooks/useFetchCollection'
+import { FILTER_BY_SEARCH, selectFilteredProducts } from '../../../redux/slice/filterSlice'
+import Search from '../../search/Search'
+import { useState } from 'react'
+import Pagination from '../../pagination/Pagination'
 
 
 const AdminViewProducts = () => {
   const { data, loading } = useFetchCollection("products")
   const products = useSelector(selectProducts)
+  const [search, setSearch] = useState("");
+  const filteredProducts = useSelector(selectFilteredProducts)
   const dispatch = useDispatch()
+
+
+  //Pagination State
+  const [currentPage, setCurrentPage] = useState(1)
+  const [productsPerPage] = useState(10)
+
+  //Get Current Products
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct)
 
   useEffect(() => {
     dispatch(STORE_PRODUCTS({
       products: data
     }))
   }, [data, dispatch])
+
+  useEffect(() => {
+
+    dispatch(FILTER_BY_SEARCH({
+      products,
+      search
+    }))
+
+  }, [dispatch, products, search])
+
 
 
   const deleteProduct = async (id, imageUrl) => {
@@ -31,7 +57,7 @@ const AdminViewProducts = () => {
       await deleteDoc(doc(db, "products", id));
       const strogeRef = ref(storage, imageUrl);
       await deleteObject(strogeRef)
-      toast.success("Produc deleted successfully.")
+      toast.success("Product deleted successfully.")
     }
     catch (error) {
       toast.error(error.message)
@@ -66,9 +92,15 @@ const AdminViewProducts = () => {
       {loading && <Loader />}
       <div className={styles.table}>
         <h2>All Products</h2>
+        <div className={styles.search}>
+          <p>
+            <b>{filteredProducts.length}</b> products found
+          </p>
+          <Search value={search} onChange={(e) => { setSearch(e.target.value) }} />
+        </div>
 
-        {products.length === 0 ? (
-          <p>No product found.</p>
+        {filteredProducts.length === 0 ? (
+          <p>No products found.</p>
         ) : (
           <table>
             <thead>
@@ -82,7 +114,7 @@ const AdminViewProducts = () => {
               </tr>
             </thead>
 
-            {products.map((product, index) => {
+            {currentProducts.map((product, index) => {
               const { id, name, price, imageUrl, category } = product
               return (
                 <tbody key={id}>
@@ -109,7 +141,12 @@ const AdminViewProducts = () => {
             })}
           </table>
         )}
-
+        <Pagination
+          productsPerPage={productsPerPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalProducts={filteredProducts.length}
+        />
       </div>
     </>
   )

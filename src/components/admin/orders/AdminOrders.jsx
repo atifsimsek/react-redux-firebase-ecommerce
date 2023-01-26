@@ -3,7 +3,6 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import useFetchCollection from "../../../customHooks/useFetchCollection"
-import { selectUserID } from "../../../redux/slice/authSlice"
 import { selectOrderHistory, STORE_ORDERS } from "../../../redux/slice/orderSlice"
 import Loader from "../../loader/Loader"
 import styles from "./AdminOrders.module.scss"
@@ -11,7 +10,7 @@ import styles from "./AdminOrders.module.scss"
 const AdminOrders = () => {
   const { data, isLoading } = useFetchCollection("orders")
   const orderHistory = useSelector(selectOrderHistory)
-  const userID = useSelector(selectUserID)
+  // const userID = useSelector(selectUserID)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()

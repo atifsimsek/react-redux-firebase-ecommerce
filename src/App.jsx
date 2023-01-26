@@ -2,10 +2,10 @@ import { Routes, Route } from 'react-router-dom';
 import { Header, Footer } from "./components"
 import { Home, Contact, Admin, OrderHistory } from "./pages"
 import './App.scss';
-import { Login, Register, Reset } from './pages';
+import { Login, Register } from './pages';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AdminOnlyRoute, { AdminOnlyLink } from './components/adminOnlyRoute/AdminOnlyRoute';
+import AdminOnlyRoute from './components/adminOnlyRoute/AdminOnlyRoute';
 import ProductDetails from './components/product/productDetails/ProductDetails';
 import Cart from './pages/cart/Cart';
 import CheckoutDetails from './pages/checkout/CheckoutDetails';
@@ -13,6 +13,7 @@ import Checkout from './pages/checkout/Checkout';
 import CheckoutSuccess from './pages/checkout/CheckoutSuccess';
 import OrderDetails from './components/orderDetails/OrderDetails';
 import ReviewProducs from './components/reviewProducts/ReviewProducs';
+import NotFound from './pages/notFound/NotFound';
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
            <Route path='/order-history' element={<OrderHistory />} />
            <Route path='/order-details/:id' element={<OrderDetails />} />
            <Route path='/review-product/:id' element={<ReviewProducs />} />
+           <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
 

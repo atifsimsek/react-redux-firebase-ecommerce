@@ -1,8 +1,6 @@
-import { doc, getDoc } from 'firebase/firestore'
+
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { db } from '../../../firebase/config'
 import styles from "./ProductDetails.module.scss"
 import spinner from "../../../assets/spinner.jpg"
 import { ADD_TO_CART, CALCULATE_CARTQUANTİTY, DECREASE_CART, selectCartItems } from '../../../redux/slice/cartSlice'

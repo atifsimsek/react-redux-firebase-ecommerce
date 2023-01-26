@@ -1,6 +1,6 @@
 import styles from "./Header.module.scss"
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaTimes, FaUserCircle, FaWindows } from "react-icons/fa"
+import { FaShoppingCart, FaTimes, FaUserCircle } from "react-icons/fa"
 import { HiOutlineMenuAlt3 } from "react-icons/hi"
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/config"
@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from "react-redux";
 import { SET_ACTİVE_USER, REMOVE_ACTİVE_USER } from "../../redux/slice/authSlice";
 import ShowOnLogin, { ShowOnLogout } from "../hiddenLink/HiddenLink";
-import AdminOnlyRoute, { AdminOnlyLink } from "../adminOnlyRoute/AdminOnlyRoute";
+import  { AdminOnlyLink } from "../adminOnlyRoute/AdminOnlyRoute";
 import { CALCULATE_CARTQUANTİTY, selectCartTotalQuantitiy } from "../../redux/slice/cartSlice";
 
 
@@ -97,7 +97,7 @@ const Header = () => {
 
   const logo = (
     <div className={styles.logo}>
-      <Link>
+      <Link to={"/"}>
         <h2>
           e<span>Commerce</span>.
         </h2>

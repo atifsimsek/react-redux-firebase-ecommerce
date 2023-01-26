@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import styles from './OrderDetails.module.scss'
 import spinnerImg from "../../../assets/spinner.jpg"
 import useFetchDocument from '../../../customHooks/useFetchDocument'
+import ChangeOrderStatus from '../changeOrderStatus/ChangeOrderStatus'
 const AdminOrderDetails = () => {
   const { id } = useParams()
   const [order, setOrder] = useState(null)
@@ -40,7 +41,7 @@ const AdminOrderDetails = () => {
               <br />
               <b>State: </b>{order.shippingAddress.state}
               <br />
-             <b> Country:</b> {order.shippingAddress.country}
+              <b> Country:</b> {order.shippingAddress.country}
             </p>
             <br />
             <table>
@@ -55,21 +56,21 @@ const AdminOrderDetails = () => {
               </thead>
               <tbody>
                 {order.cartItems.map((cart, index) => {
-                  const { id, name, price,imageUrl,cartQuantity } = cart
+                  const { id, name, price, imageUrl, cartQuantity } = cart
 
-                  return(
+                  return (
                     <tr key={id}>
                       <td>
-                        <b>{index+1}</b>
+                        <b>{index + 1}</b>
                       </td>
                       <td>
                         <p><b>{name}</b></p>
-                        <img src={imageUrl} alt={name} style={{width:"100px"}} />
+                        <img src={imageUrl} alt={name} style={{ width: "100px" }} />
                       </td>
                       <td>$ {price}</td>
                       <td>{cartQuantity}</td>
-                      <td>$ {(price*cartQuantity).toFixed(2)}</td>
-            
+                      <td>$ {(price * cartQuantity).toFixed(2)}</td>
+
                     </tr>
                   )
                 })}
@@ -77,6 +78,7 @@ const AdminOrderDetails = () => {
             </table>
           </>
         )}
+        <ChangeOrderStatus order={order} id={id} />
       </div>
     </>
   )

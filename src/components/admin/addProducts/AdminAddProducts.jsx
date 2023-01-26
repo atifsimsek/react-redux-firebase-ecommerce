@@ -1,5 +1,5 @@
 import styles from './AdminAddProducts.module.scss'
-import {  useState } from 'react'
+import { useState } from 'react'
 import { Card } from "../../../pages"
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { db, storage } from '../../../firebase/config'
@@ -100,7 +100,7 @@ const AdminAddProducts = () => {
 
 
     try {
-      const docRef = addDoc(collection(db, "products"), {
+      addDoc(collection(db, "products"), {
         name: product.name,
         imageUrl: product.imageUrl,
         price: Number(product.price),

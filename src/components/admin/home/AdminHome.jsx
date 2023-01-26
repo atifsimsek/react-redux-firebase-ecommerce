@@ -8,6 +8,7 @@ import { CALC_TOTAL_ORDER_AMOUNT, selectOrderHistory, selectTotalOrderAmount, ST
 import { selectProducts, STORE_PRODUCTS } from "../../../redux/slice/productsSlice"
 import InfoBox from "../../infoBox/InfoBox"
 import styles from "./AdminHome.module.scss"
+import Chart from "../../chart/Chart"
 
 const AdminHome = () => {
 
@@ -17,8 +18,8 @@ const AdminHome = () => {
   const orders = useSelector(selectOrderHistory)
   const totalOrderAmount = useSelector(selectTotalOrderAmount)
 
-  const firebaseProducts  = useFetchCollection("products")
-  const  firebaseOrders = useFetchCollection("orders")
+  const firebaseProducts = useFetchCollection("products")
+  const firebaseOrders = useFetchCollection("orders")
 
   useEffect(() => {
     dispatch(STORE_PRODUCTS({
@@ -28,7 +29,7 @@ const AdminHome = () => {
     dispatch(CALC_TOTAL_ORDER_AMOUNT({
       amount: firebaseOrders.data
     }))
-  }, [dispatch,firebaseProducts,firebaseOrders])
+  }, [dispatch, firebaseProducts, firebaseOrders])
 
 
 
@@ -59,6 +60,9 @@ const AdminHome = () => {
           count={orders.length}
           icon={ordersIcon}
         />
+      </div>
+      <div>
+        <Chart />
       </div>
     </div>
   )
