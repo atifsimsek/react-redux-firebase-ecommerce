@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react-redux-firebase-ecommerce/static/css/main.0dbb171d.css",
-    "main.js": "/react-redux-firebase-ecommerce/static/js/main.9c8e6009.js",
+    "main.js": "/react-redux-firebase-ecommerce/static/js/main.8cd3b3d6.js",
     "static/media/spinner.jpg": "/react-redux-firebase-ecommerce/static/media/spinner.afa973eee05e0ebff95a.jpg",
     "static/media/register.png": "/react-redux-firebase-ecommerce/static/media/register.c63eced99fcb38972a6c.png",
     "static/media/forgot.png": "/react-redux-firebase-ecommerce/static/media/forgot.cfba148d722f088aeddb.png",
@@ -9,10 +9,10 @@
     "static/media/loader.gif": "/react-redux-firebase-ecommerce/static/media/loader.9d11df4bdd0bb34de773.gif",
     "index.html": "/react-redux-firebase-ecommerce/index.html",
     "main.0dbb171d.css.map": "/react-redux-firebase-ecommerce/static/css/main.0dbb171d.css.map",
-    "main.9c8e6009.js.map": "/react-redux-firebase-ecommerce/static/js/main.9c8e6009.js.map"
+    "main.8cd3b3d6.js.map": "/react-redux-firebase-ecommerce/static/js/main.8cd3b3d6.js.map"
   },
   "entrypoints": [
     "static/css/main.0dbb171d.css",
-    "static/js/main.9c8e6009.js"
+    "static/js/main.8cd3b3d6.js"
   ]
 }
