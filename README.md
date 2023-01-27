@@ -6,14 +6,15 @@
 
 1. Register-Login
 2. Register witdh google
-3. Placing an order
-4. Comment on the order
-5. User order view
-6. Admin Panel
-7. Order update,add,delete
-8. Order status update
-9. Order info charts
-10. Email Form
+3. Filter Product by category, range, search
+4. Placing an order
+5. Comment on the order
+6. User order view
+7. Admin Panel
+8. Order update,add,delete
+9. Order status update
+10. Order info charts
+11. Email Form
 
 #### Admin Account
 ID : **test@gmail.com**
