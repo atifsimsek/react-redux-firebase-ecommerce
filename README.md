@@ -16,14 +16,12 @@
 10. Email Form
 
 #### Admin Account
-ID :**test@gmail.com**
-Password :**test12345**
-
-<br/>
+ID : **test@gmail.com**
+Password : **test12345**
 
 #### Normal Account
-ID :**deneme1@gmail.com**
-Password :**deneme12345**
+ID : **deneme1@gmail.com**
+Password : **deneme12345**
 
 Ps: You can try signing up at a different address.
 
