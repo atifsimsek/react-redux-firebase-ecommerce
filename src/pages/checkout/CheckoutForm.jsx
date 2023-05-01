@@ -2,19 +2,23 @@ import React, { useEffect, useState } from "react";
 import {
   PaymentElement,
   useStripe,
-  useElements
+  useElements,
 } from "@stripe/react-stripe-js";
-import styles from "./CheckoutForm.module.scss"
+import styles from "./CheckoutForm.module.scss";
 import Card from "../card/Card";
 import CheckoutSummary from "../../components/checkoutSummary/CheckoutSummary";
-import spinnerImg from "../../assets/spinner.jpg"
+import spinnerImg from "../../assets/spinner.jpg";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useDispatch, useSelector } from "react-redux";
 import { selectEmail, selectUserID } from "../../redux/slice/authSlice";
-import { CLEAR_CART, selectCartItems, selectCartTotalAmount } from "../../redux/slice/cartSlice";
+import {
+  CLEAR_CART,
+  selectCartItems,
+  selectCartTotalAmount,
+} from "../../redux/slice/cartSlice";
 import { selectShippingAddress } from "../../redux/slice/checkoutSlice";
 
 const CheckoutForm = () => {
@@ -22,15 +26,14 @@ const CheckoutForm = () => {
   const elements = useElements();
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const userID = useSelector(selectUserID)
-  const userEmail = useSelector(selectEmail)
-  const cartItems = useSelector(selectCartItems)
-  const shippingAddress = useSelector(selectShippingAddress)
-  const cartTotalAmount = useSelector(selectCartTotalAmount)
+  const userID = useSelector(selectUserID);
+  const userEmail = useSelector(selectEmail);
+  const cartItems = useSelector(selectCartItems);
+  const shippingAddress = useSelector(selectShippingAddress);
+  const cartTotalAmount = useSelector(selectCartTotalAmount);
 
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!stripe) {
@@ -44,14 +47,12 @@ const CheckoutForm = () => {
     if (!clientSecret) {
       return;
     }
-
-
   }, [stripe]);
 
   const saveOrder = () => {
-    const today = new Date()
-    const date = today.toDateString()
-    const time = today.toLocaleTimeString()
+    const today = new Date();
+    const date = today.toDateString();
+    const time = today.toLocaleTimeString();
     const orderConfig = {
       userID,
       userEmail,
@@ -61,32 +62,28 @@ const CheckoutForm = () => {
       orderStatus: "Order Placed...",
       cartItems,
       shippingAddress,
-      createdAt: Timestamp.now().toDate()
-    }
+      createdAt: Timestamp.now().toDate(),
+    };
 
     try {
       addDoc(collection(db, "orders"), orderConfig);
-      dispatch(CLEAR_CART())
-      toast.success("Order Saved")
-      navigate("/checkout-success")
+      dispatch(CLEAR_CART());
+      toast.success("Order Saved");
+      navigate("/checkout-success");
+    } catch (error) {
+      toast.error(error.message);
     }
-    catch (error) {
-      toast.error(error.message)
-    }
-
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(null)
-
+    setMessage(null);
 
     if (!stripe || !elements) {
       return;
     }
 
     setIsLoading(true);
-
 
     await stripe
       .confirmPayment({
@@ -95,48 +92,67 @@ const CheckoutForm = () => {
           // Make sure to change this to your payment completion page
           return_url: "https://atifsimsek.github.io/checkout-success",
         },
-        redirect: "if_required"
+        redirect: "if_required",
       })
       .then((result) => {
         if (result.error) {
-          toast.error(result.error.message)
-          setMessage(result.error.message)
+          toast.error(result.error.message);
+          setMessage(result.error.message);
           return;
         }
         if (result.paymentIntent) {
           if (result.paymentIntent.status === "succeeded") {
-            setIsLoading(false)
-            toast.success("Payment Successfull")
-            saveOrder()
+            setIsLoading(false);
+            toast.success("Payment Successfull");
+            saveOrder();
           }
         }
-      })
+      });
 
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const paymentElementOptions = {
-    layout: "tabs"
-  }
+    layout: "tabs",
+  };
 
   return (
     <section>
       <div className={`container ${styles.checkout} `}>
         <h2>Checkout</h2>
-        <form onSubmit={(e) => { handleSubmit(e) }}>
+        <form
+          onSubmit={(e) => {
+            handleSubmit(e);
+          }}
+        >
           <div>
-            <Card cardClass={styles.card} >
+            <Card cardClass={styles.card}>
               <CheckoutSummary />
             </Card>
           </div>
           <div>
             <Card cardClass={`${styles.card} ${styles.pay}`}>
               <h3>Stripe Checkot</h3>
-              <PaymentElement id={styles["payment-element"]} options={paymentElementOptions} />
+              <PaymentElement
+                id={styles["payment-element"]}
+                options={paymentElementOptions}
+              />
 
-              <button disabled={isLoading || !stripe || !elements} id="submit" className={styles.button}>
+              <button
+                disabled={isLoading || !stripe || !elements}
+                id="submit"
+                className={styles.button}
+              >
                 <span id="button-text">
-                  {isLoading ? <img src={spinnerImg} alt="Loading..." style={{ width: "20px" }} /> : "Pay now"}
+                  {isLoading ? (
+                    <img
+                      src={spinnerImg}
+                      alt="Loading..."
+                      style={{ width: "20px" }}
+                    />
+                  ) : (
+                    "Pay now"
+                  )}
                 </span>
               </button>
               {/* Show any error or success messages */}
@@ -146,8 +162,7 @@ const CheckoutForm = () => {
         </form>
       </div>
     </section>
-
   );
-}
+};
 
-export default CheckoutForm
+export default CheckoutForm;

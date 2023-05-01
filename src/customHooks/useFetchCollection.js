@@ -5,46 +5,35 @@ import { toast } from "react-toastify";
 import { db } from "../firebase/config";
 
 const useFetchCollection = (collectionName) => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-    const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
+  const getCollection = () => {
+    setLoading(true);
 
+    try {
+      const docRef = collection(db, collectionName);
+      const q = query(docRef, orderBy("createdAt", "desc"));
 
-    const getCollection = () => {
-        setLoading(true)
+      onSnapshot(q, (snapshot) => {
+        const allData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-        try {
-            const docRef = collection(db, collectionName);
-            const q = query(docRef, orderBy("createdAt", "desc"));
-
-            onSnapshot(q, (snapshot) => {
-
-                const allData = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-
-                }));
-
-                setData(allData)
-                setLoading(false)
-
-            });
-
-        }
-        catch (error) {
-            setLoading(false)
-            toast.error(error.message)
-        }
-
-
+        setData(allData);
+        setLoading(false);
+      });
+    } catch (error) {
+      setLoading(false);
+      toast.error(error.message);
     }
-    useEffect(() => {
-        getCollection()
-    }, [])
+  };
+  useEffect(() => {
+    getCollection();
+  }, []);
 
-    return { data, loading }
+  return { data, loading };
 };
-
-
 
 export default useFetchCollection;

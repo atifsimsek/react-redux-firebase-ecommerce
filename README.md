@@ -17,10 +17,12 @@
 11. Email Form
 
 #### Admin Account
+
 ID : **test@gmail.com**
 Password : **test12345**
 
 #### Normal Account
+
 ID : **deneme1@gmail.com**
 Password : **deneme12345**
 
@@ -31,8 +33,8 @@ Ps: You can try signing up at a different address.
 <br/>
 <img src="src/assets/review/credit-cards.png"  width="500" ></p>
 
-
 ### **Website Images**
+
 <br/>
 <img src="src/assets/review/img-1.png"  width="500" ></p>
 <br/>

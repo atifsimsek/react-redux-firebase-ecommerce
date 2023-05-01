@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import styles from './OrderDetails.module.scss'
-import spinnerImg from "../../../assets/spinner.jpg"
-import useFetchDocument from '../../../customHooks/useFetchDocument'
-import ChangeOrderStatus from '../changeOrderStatus/ChangeOrderStatus'
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import styles from "./OrderDetails.module.scss";
+import spinnerImg from "../../../assets/spinner.jpg";
+import useFetchDocument from "../../../customHooks/useFetchDocument";
+import ChangeOrderStatus from "../changeOrderStatus/ChangeOrderStatus";
 const AdminOrderDetails = () => {
-  const { id } = useParams()
-  const [order, setOrder] = useState(null)
-  const { document } = useFetchDocument("orders", id)
+  const { id } = useParams();
+  const [order, setOrder] = useState(null);
+  const { document } = useFetchDocument("orders", id);
 
   useEffect(() => {
-    setOrder(document)
-  }, [document])
+    setOrder(document);
+  }, [document]);
 
   return (
     <>
@@ -37,9 +37,11 @@ const AdminOrderDetails = () => {
             <p>
               <b>Shipping Address</b>
               <br />
-              <b>Address: </b> {order.shippingAddress.line1}, {order.shippingAddress.line2}, {order.shippingAddress.city}
+              <b>Address: </b> {order.shippingAddress.line1},{" "}
+              {order.shippingAddress.line2}, {order.shippingAddress.city}
               <br />
-              <b>State: </b>{order.shippingAddress.state}
+              <b>State: </b>
+              {order.shippingAddress.state}
               <br />
               <b> Country:</b> {order.shippingAddress.country}
             </p>
@@ -56,7 +58,7 @@ const AdminOrderDetails = () => {
               </thead>
               <tbody>
                 {order.cartItems.map((cart, index) => {
-                  const { id, name, price, imageUrl, cartQuantity } = cart
+                  const { id, name, price, imageUrl, cartQuantity } = cart;
 
                   return (
                     <tr key={id}>
@@ -64,15 +66,20 @@ const AdminOrderDetails = () => {
                         <b>{index + 1}</b>
                       </td>
                       <td>
-                        <p><b>{name}</b></p>
-                        <img src={imageUrl} alt={name} style={{ width: "100px" }} />
+                        <p>
+                          <b>{name}</b>
+                        </p>
+                        <img
+                          src={imageUrl}
+                          alt={name}
+                          style={{ width: "100px" }}
+                        />
                       </td>
                       <td>$ {price}</td>
                       <td>{cartQuantity}</td>
                       <td>$ {(price * cartQuantity).toFixed(2)}</td>
-
                     </tr>
-                  )
+                  );
                 })}
               </tbody>
             </table>
@@ -81,7 +88,7 @@ const AdminOrderDetails = () => {
         <ChangeOrderStatus order={order} id={id} />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AdminOrderDetails
+export default AdminOrderDetails;

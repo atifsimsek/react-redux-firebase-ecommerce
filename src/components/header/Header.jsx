@@ -1,30 +1,32 @@
-import styles from "./Header.module.scss"
+import styles from "./Header.module.scss";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaTimes, FaUserCircle } from "react-icons/fa"
-import { HiOutlineMenuAlt3 } from "react-icons/hi"
+import { FaShoppingCart, FaTimes, FaUserCircle } from "react-icons/fa";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { signOut, onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../firebase/config"
+import { auth } from "../../firebase/config";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_ACTİVE_USER, REMOVE_ACTİVE_USER } from "../../redux/slice/authSlice";
+import {
+  SET_ACTİVE_USER,
+  REMOVE_ACTİVE_USER,
+} from "../../redux/slice/authSlice";
 import ShowOnLogin, { ShowOnLogout } from "../hiddenLink/HiddenLink";
-import  { AdminOnlyLink } from "../adminOnlyRoute/AdminOnlyRoute";
-import { CALCULATE_CARTQUANTİTY, selectCartTotalQuantitiy } from "../../redux/slice/cartSlice";
-
-
-
+import { AdminOnlyLink } from "../adminOnlyRoute/AdminOnlyRoute";
+import {
+  CALCULATE_CARTQUANTİTY,
+  selectCartTotalQuantitiy,
+} from "../../redux/slice/cartSlice";
 
 const Header = () => {
-
-  const [showMenu, setShowMenu] = useState(false)
-  const [displayName, setdisplayName] = useState("")
-  const cartTotalQuantity = useSelector(selectCartTotalQuantitiy)
+  const [showMenu, setShowMenu] = useState(false);
+  const [displayName, setdisplayName] = useState("");
+  const cartTotalQuantity = useSelector(selectCartTotalQuantitiy);
   // const [scrollPage, setScrollPage] = useState(false)
 
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // const fixNavbar = () => {
   //   if (window.scrollY > 50) {
@@ -39,59 +41,56 @@ const Header = () => {
 
   // window.addEventListener("scroll", fixNavbar)
 
-
   //Calculate Cart Quantity
   useEffect(() => {
-    dispatch(CALCULATE_CARTQUANTİTY())
-  }, [dispatch])
-
+    dispatch(CALCULATE_CARTQUANTİTY());
+  }, [dispatch]);
 
   // Monitor currently sign in user
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         if (user.displayName == null) {
-          const u1 = user.email.split("@")[0]
-          const uName = u1.charAt(0).toLocaleUpperCase() + u1.slice(1)
-          setdisplayName(uName)
+          const u1 = user.email.split("@")[0];
+          const uName = u1.charAt(0).toLocaleUpperCase() + u1.slice(1);
+          setdisplayName(uName);
+        } else {
+          setdisplayName(user.displayName);
         }
-        else {
-          setdisplayName(user.displayName)
-        }
-        dispatch(SET_ACTİVE_USER({
-          email: user.email,
-          userName: displayName,
-          userID: user.uid,
-        }))
+        dispatch(
+          SET_ACTİVE_USER({
+            email: user.email,
+            userName: displayName,
+            userID: user.uid,
+          })
+        );
       } else {
-        setdisplayName("")
-        dispatch(REMOVE_ACTİVE_USER())
+        setdisplayName("");
+        dispatch(REMOVE_ACTİVE_USER());
       }
     });
-  }, [dispatch, displayName])
-
+  }, [dispatch, displayName]);
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu)
-  }
+    setShowMenu(!showMenu);
+  };
 
   const hideMenu = () => {
-    setShowMenu(false)
-  }
+    setShowMenu(false);
+  };
 
-  const activeLink = ({ isActive }) =>
-    (isActive ? `${styles.active}` : "")
+  const activeLink = ({ isActive }) => (isActive ? `${styles.active}` : "");
 
   const logoutUser = () => {
-
-    signOut(auth).then(() => {
-      toast.success("Logout successfully")
-      navigate("/react-redux-firebase-ecommerce")
-    }).catch((error) => {
-      toast.error(error.message)
-    });
-  }
-
+    signOut(auth)
+      .then(() => {
+        toast.success("Logout successfully");
+        navigate("/react-redux-firebase-ecommerce");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
 
   // Helper Components
 
@@ -103,7 +102,7 @@ const Header = () => {
         </h2>
       </Link>
     </div>
-  )
+  );
   const cart = (
     <span className={styles.cart}>
       <Link to="/cart">
@@ -112,8 +111,7 @@ const Header = () => {
         <p>{cartTotalQuantity}</p>
       </Link>
     </span>
-  )
-
+  );
 
   return (
     <>
@@ -134,11 +132,19 @@ const Header = () => {
         <div className={styles.header}>
           {logo}
 
-          <nav className={showMenu ? `${styles["show-nav"]}` : `${styles["hide-menu"]}`} >
-            <div className={showMenu ? `${styles["nav-wrapper"]} ${styles["show-nav-wrapper"]} ` : `${styles["nav-wrapper"]}`}
+          <nav
+            className={
+              showMenu ? `${styles["show-nav"]}` : `${styles["hide-menu"]}`
+            }
+          >
+            <div
+              className={
+                showMenu
+                  ? `${styles["nav-wrapper"]} ${styles["show-nav-wrapper"]} `
+                  : `${styles["nav-wrapper"]}`
+              }
               onClick={hideMenu}
-            >
-            </div>
+            ></div>
 
             {/*****  Navigate Area *****/}
 
@@ -156,7 +162,10 @@ const Header = () => {
                 </AdminOnlyLink>
               </li>
               <li>
-                <NavLink to="/react-redux-firebase-ecommerce/" className={activeLink}>
+                <NavLink
+                  to="/react-redux-firebase-ecommerce/"
+                  className={activeLink}
+                >
                   Home
                 </NavLink>
               </li>
@@ -170,34 +179,39 @@ const Header = () => {
             {/***** User Login/Logout *****/}
             <div onClick={hideMenu} className={styles["header-right"]}>
               <span className={styles.links}>
-
                 <ShowOnLogout>
-                  <NavLink className={activeLink} to="/login">Login</NavLink>
-                  <NavLink className={activeLink} to="/register">Register</NavLink>
+                  <NavLink className={activeLink} to="/login">
+                    Login
+                  </NavLink>
+                  <NavLink className={activeLink} to="/register">
+                    Register
+                  </NavLink>
                 </ShowOnLogout>
                 <ShowOnLogin>
-                  <a style={{ color: "#ff7722" }} href="#home"><FaUserCircle size={16} /> Hi,{displayName}</a>
+                  <a style={{ color: "#ff7722" }} href="#home">
+                    <FaUserCircle size={16} /> Hi,{displayName}
+                  </a>
                 </ShowOnLogin>
                 <ShowOnLogin>
-                  <NavLink className={activeLink} to="/order-history">My Orders</NavLink>
+                  <NavLink className={activeLink} to="/order-history">
+                    My Orders
+                  </NavLink>
                 </ShowOnLogin>
                 <ShowOnLogin>
-                  <NavLink onClick={logoutUser} to="/order-history">Logout</NavLink>
+                  <NavLink onClick={logoutUser} to="/order-history">
+                    Logout
+                  </NavLink>
                 </ShowOnLogin>
-
               </span>
               {cart}
-
             </div>
-
           </nav>
           <div className={styles["menu-icon"]}>
             {cart}
             <HiOutlineMenuAlt3 size={28} onClick={toggleMenu} />
           </div>
-
         </div>
-      </header >
+      </header>
     </>
   );
 };

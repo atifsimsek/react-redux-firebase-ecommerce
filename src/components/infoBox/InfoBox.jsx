@@ -1,19 +1,18 @@
-import { Card } from '../../pages'
-import styles from './InfoBox.module.scss'
+import { Card } from "../../pages";
+import styles from "./InfoBox.module.scss";
 
-const InfoBox = ({ cardClass,title,count,icon }) => {
-    return (
-        <div className={styles["info-box"]}>
-            <Card cardClass={cardClass}>
-                <h4>{title}</h4>
-                <span>
-                    <h3>{count}</h3>
-                    {icon}
-                </span>
-            </Card>
+const InfoBox = ({ cardClass, title, count, icon }) => {
+  return (
+    <div className={styles["info-box"]}>
+      <Card cardClass={cardClass}>
+        <h4>{title}</h4>
+        <span>
+          <h3>{count}</h3>
+          {icon}
+        </span>
+      </Card>
+    </div>
+  );
+};
 
-        </div>
-    )
-}
-
-export default InfoBox
+export default InfoBox;

@@ -1,19 +1,18 @@
-import { useEffect } from "react"
-import { useState } from "react"
-import { Link, useParams } from "react-router-dom"
-import spinnerImg from "../../assets/spinner.jpg"
-import useFetchDocument from "../../customHooks/useFetchDocument"
-import styles from "./OrderDetails.module.scss"
+import { useEffect } from "react";
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import spinnerImg from "../../assets/spinner.jpg";
+import useFetchDocument from "../../customHooks/useFetchDocument";
+import styles from "./OrderDetails.module.scss";
 
 const OrderDetails = () => {
-
-  const { id } = useParams()
-  const [order, setOrder] = useState(null)
-  const { document } = useFetchDocument("orders", id)
+  const { id } = useParams();
+  const [order, setOrder] = useState(null);
+  const { document } = useFetchDocument("orders", id);
 
   useEffect(() => {
-    setOrder(document)
-  }, [document])
+    setOrder(document);
+  }, [document]);
 
   return (
     <section>
@@ -50,40 +49,43 @@ const OrderDetails = () => {
               </thead>
               <tbody>
                 {order.cartItems.map((cart, index) => {
-                  const { id, name, price,imageUrl,cartQuantity } = cart
+                  const { id, name, price, imageUrl, cartQuantity } = cart;
 
-                  return(
+                  return (
                     <tr key={id}>
                       <td>
-                        <b>{index+1}</b>
+                        <b>{index + 1}</b>
                       </td>
                       <td>
-                        <p><b>{name}</b></p>
-                        <img src={imageUrl} alt={name} style={{width:"100px"}} />
+                        <p>
+                          <b>{name}</b>
+                        </p>
+                        <img
+                          src={imageUrl}
+                          alt={name}
+                          style={{ width: "100px" }}
+                        />
                       </td>
                       <td>$ {price}</td>
                       <td>{cartQuantity}</td>
-                      <td>$ {(price*cartQuantity).toFixed(2)}</td>
-                      <td className={styles.icons}> 
-                      <Link to={`/review-product/${id}`}>
-                        <button className="--btn --btn-primary">
-                          Review Product
-                        </button>
-                      </Link>
+                      <td>$ {(price * cartQuantity).toFixed(2)}</td>
+                      <td className={styles.icons}>
+                        <Link to={`/review-product/${id}`}>
+                          <button className="--btn --btn-primary">
+                            Review Product
+                          </button>
+                        </Link>
                       </td>
-
-
                     </tr>
-                  )
+                  );
                 })}
               </tbody>
             </table>
           </>
         )}
       </div>
-
     </section>
-  )
-}
+  );
+};
 
-export default OrderDetails
+export default OrderDetails;

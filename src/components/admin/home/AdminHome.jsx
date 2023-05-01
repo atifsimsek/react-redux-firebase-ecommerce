@@ -1,42 +1,50 @@
-import { useEffect } from "react"
-import { AiFillDollarCircle } from "react-icons/ai"
-import { BsCart4 } from "react-icons/bs"
-import { FaCartArrowDown } from "react-icons/fa"
-import { useDispatch, useSelector } from "react-redux"
-import useFetchCollection from "../../../customHooks/useFetchCollection"
-import { CALC_TOTAL_ORDER_AMOUNT, selectOrderHistory, selectTotalOrderAmount, STORE_ORDERS } from "../../../redux/slice/orderSlice"
-import { selectProducts, STORE_PRODUCTS } from "../../../redux/slice/productsSlice"
-import InfoBox from "../../infoBox/InfoBox"
-import styles from "./AdminHome.module.scss"
-import Chart from "../../chart/Chart"
+import { useEffect } from "react";
+import { AiFillDollarCircle } from "react-icons/ai";
+import { BsCart4 } from "react-icons/bs";
+import { FaCartArrowDown } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import useFetchCollection from "../../../customHooks/useFetchCollection";
+import {
+  CALC_TOTAL_ORDER_AMOUNT,
+  selectOrderHistory,
+  selectTotalOrderAmount,
+  STORE_ORDERS,
+} from "../../../redux/slice/orderSlice";
+import {
+  selectProducts,
+  STORE_PRODUCTS,
+} from "../../../redux/slice/productsSlice";
+import InfoBox from "../../infoBox/InfoBox";
+import styles from "./AdminHome.module.scss";
+import Chart from "../../chart/Chart";
 
 const AdminHome = () => {
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
+  const products = useSelector(selectProducts);
+  const orders = useSelector(selectOrderHistory);
+  const totalOrderAmount = useSelector(selectTotalOrderAmount);
 
-  const products = useSelector(selectProducts)
-  const orders = useSelector(selectOrderHistory)
-  const totalOrderAmount = useSelector(selectTotalOrderAmount)
-
-  const firebaseProducts = useFetchCollection("products")
-  const firebaseOrders = useFetchCollection("orders")
+  const firebaseProducts = useFetchCollection("products");
+  const firebaseOrders = useFetchCollection("orders");
 
   useEffect(() => {
-    dispatch(STORE_PRODUCTS({
-      products: firebaseProducts.data
-    }))
-    dispatch(STORE_ORDERS(firebaseOrders.data))
-    dispatch(CALC_TOTAL_ORDER_AMOUNT({
-      amount: firebaseOrders.data
-    }))
-  }, [dispatch, firebaseProducts, firebaseOrders])
+    dispatch(
+      STORE_PRODUCTS({
+        products: firebaseProducts.data,
+      })
+    );
+    dispatch(STORE_ORDERS(firebaseOrders.data));
+    dispatch(
+      CALC_TOTAL_ORDER_AMOUNT({
+        amount: firebaseOrders.data,
+      })
+    );
+  }, [dispatch, firebaseProducts, firebaseOrders]);
 
-
-
-
-  const earningIcon = <AiFillDollarCircle size={30} color="#b624ff" />
-  const productIcon = <BsCart4 size={30} color="#1f93ff" />
-  const ordersIcon = <FaCartArrowDown size={30} color="orangered" />
+  const earningIcon = <AiFillDollarCircle size={30} color="#b624ff" />;
+  const productIcon = <BsCart4 size={30} color="#1f93ff" />;
+  const ordersIcon = <FaCartArrowDown size={30} color="orangered" />;
 
   return (
     <div className={styles.home}>
@@ -65,7 +73,7 @@ const AdminHome = () => {
         <Chart />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminHome
+export default AdminHome;

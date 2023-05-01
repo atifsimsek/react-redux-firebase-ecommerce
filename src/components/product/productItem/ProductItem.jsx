@@ -1,32 +1,29 @@
-import { Link } from "react-router-dom"
-import Card from "../../../pages/card/Card"
-import styles from "./ProductItem.module.scss"
-import { useDispatch } from "react-redux"
-import { ADD_TO_CART, CALCULATE_CARTQUANTİTY } from "../../../redux/slice/cartSlice"
+import { Link } from "react-router-dom";
+import Card from "../../../pages/card/Card";
+import styles from "./ProductItem.module.scss";
+import { useDispatch } from "react-redux";
+import {
+  ADD_TO_CART,
+  CALCULATE_CARTQUANTİTY,
+} from "../../../redux/slice/cartSlice";
 
 const ProductItem = ({ product, grid, id, name, price, desc, imageUrl }) => {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const shortenText = (text, n = 15) => {
-
     if (text.length > n) {
-      const shortenedText = text.substring(0, n).concat("...")
+      const shortenedText = text.substring(0, n).concat("...");
 
-      return shortenedText
+      return shortenedText;
     }
 
-    return text
-
-  }
-
-
+    return text;
+  };
 
   const addToCart = (product) => {
-    dispatch(ADD_TO_CART(product))
-    dispatch(CALCULATE_CARTQUANTİTY())
-
-  }
+    dispatch(ADD_TO_CART(product));
+    dispatch(CALCULATE_CARTQUANTİTY());
+  };
 
   return (
     <Card cardClass={grid ? `${styles.grid}` : `${styles.list}`}>
@@ -36,16 +33,23 @@ const ProductItem = ({ product, grid, id, name, price, desc, imageUrl }) => {
         </div>
       </Link>
       <div className={styles.content}>
-        <div className={styles.details} >
+        <div className={styles.details}>
           <p>{`$${price} `}</p>
           <h4>{shortenText(name, 18)}</h4>
         </div>
         {!grid && <p className={styles.desc}>{shortenText(desc, 200)} </p>}
 
-        <button onClick={() => { addToCart(product) }} className="--btn --btn-danger">Add To Cart</button>
+        <button
+          onClick={() => {
+            addToCart(product);
+          }}
+          className="--btn --btn-danger"
+        >
+          Add To Cart
+        </button>
       </div>
     </Card>
-  )
-}
+  );
+};
 
-export default ProductItem
+export default ProductItem;
